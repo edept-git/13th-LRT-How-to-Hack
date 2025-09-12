@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>College Notice Board</title>
+</head>
+<body>
+  <h1>📢 College Notice Board</h1>
+
+  <input id="noticeInput" type="text" placeholder="Write your notice here..." />
+  <button onclick="addNotice()">Add Notice</button>
+
+  <ul id="noticeList"></ul>
+
+  <script>
+    function addNotice() {
+      const input = document.getElementById("noticeInput");
+      const list = document.getElementById("noticeList");
+
+      if (input.value.trim() === "") return; // ignore empty input
+
+      const li = document.createElement("li");
+      li.textContent = input.value;
+      list.appendChild(li);
+
+      input.value = "";
+    }
+  </script>
+</body>
+</html>

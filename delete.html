@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>College Notice Board</title>
+</head>
+<body>
+  <h1>📢 College Notice Board</h1>
+
+  <input id="noticeInput" type="text" placeholder="Write your notice here..." />
+  <select id="categorySelect">
+    <option value="General">General</option>
+    <option value="Events">Events</option>
+    <option value="Academics">Academics</option>
+    <option value="Sports">Sports</option>
+  </select>
+
+  <button onclick="addNotice()">Add Notice</button>
+
+  <ul id="noticeList"></ul>
+
+  <script>
+    function addNotice() {
+      const input = document.getElementById("noticeInput");
+      const category = document.getElementById("categorySelect").value;
+      const list = document.getElementById("noticeList");
+
+      if (input.value.trim() === "") return;
+
+      const li = document.createElement("li");
+      li.textContent = `[${category}] ${input.value} `;
+
+      // Delete button
+      const delBtn = document.createElement("button");
+      delBtn.textContent = "❌";
+      delBtn.onclick = () => li.remove();
+
+      li.appendChild(delBtn);
+      list.appendChild(li);
+
+      input.value = "";
+    }
+  </script>
+</body>
+</html>
