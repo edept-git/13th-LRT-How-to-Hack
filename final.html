@@ -42,7 +42,7 @@
       margin-bottom: 20px;
     }
 
-    input, select, button {
+    input, button {
       padding: 10px;
       font-size: 16px;
       border-radius: 5px;
@@ -73,10 +73,6 @@
       font-size: 18px;
     }
 
-    .notice small {
-      color: gray;
-    }
-
     .notice button {
       background-color: red;
       color: white;
@@ -94,7 +90,6 @@
     .search-bar {
       margin-bottom: 20px;
       display: flex;
-      gap: 10px;
     }
 
     .search-bar input {
@@ -111,23 +106,11 @@
     <h2>Add a Notice</h2>
     <form id="noticeForm">
       <input type="text" id="title" placeholder="Notice Title" required>
-      <select id="category" required>
-        <option value="">Select Category</option>
-        <option value="Events">Events</option>
-        <option value="Academics">Academics</option>
-        <option value="Holidays">Holidays</option>
-      </select>
       <button type="submit">Add Notice</button>
     </form>
 
     <div class="search-bar">
       <input type="text" id="search" placeholder="Search notices...">
-      <select id="filterCategory">
-        <option value="All">All</option>
-        <option value="Events">Events</option>
-        <option value="Academics">Academics</option>
-        <option value="Holidays">Holidays</option>
-      </select>
     </div>
 
     <h2>Notices</h2>
@@ -138,20 +121,16 @@
     const noticeForm = document.getElementById("noticeForm");
     const noticeList = document.getElementById("noticeList");
     const searchInput = document.getElementById("search");
-    const filterCategory = document.getElementById("filterCategory");
 
     let notices = [];
 
     noticeForm.addEventListener("submit", (e) => {
       e.preventDefault();
       const title = document.getElementById("title").value;
-      const category = document.getElementById("category").value;
 
       const newNotice = {
         id: Date.now(),
-        title,
-        category,
-        date: new Date().toLocaleString()
+        title
       };
 
       notices.push(newNotice);
@@ -161,22 +140,18 @@
 
     function displayNotices() {
       const searchText = searchInput.value.toLowerCase();
-      const selectedCategory = filterCategory.value;
 
       noticeList.innerHTML = "";
 
-      const filteredNotices = notices.filter(notice => {
-        const matchesSearch = notice.title.toLowerCase().includes(searchText);
-        const matchesCategory = selectedCategory === "All" || notice.category === selectedCategory;
-        return matchesSearch && matchesCategory;
-      });
+      const filteredNotices = notices.filter(notice => 
+        notice.title.toLowerCase().includes(searchText)
+      );
 
       filteredNotices.forEach(notice => {
         const div = document.createElement("div");
         div.classList.add("notice");
         div.innerHTML = `
           <h3>${notice.title}</h3>
-          <small>${notice.category} | ${notice.date}</small>
           <button onclick="deleteNotice(${notice.id})">Delete</button>
         `;
         noticeList.appendChild(div);
@@ -189,7 +164,6 @@
     }
 
     searchInput.addEventListener("input", displayNotices);
-    filterCategory.addEventListener("change", displayNotices);
   </script>
 </body>
 </html>
