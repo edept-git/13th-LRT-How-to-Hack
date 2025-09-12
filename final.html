@@ -1,104 +1,195 @@
-<html>
-  <head>
-    <title>Notify - your virtual board</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        background: #f4f6f9;
-        margin: 0;
-        padding: 0;
-        display: flex;
-        justify-content: center;
-        align-items: flex-start;
-        min-height: 100vh;
-      }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>College Notice Board</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f9;
+      color: #333;
+    }
 
-      .container {
-        background: #fff;
-        margin-top: 50px;
-        padding: 20px 30px;
-        border-radius: 12px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        width: 400px;
-      }
+    header {
+      background-color: #0078d7;
+      color: white;
+      text-align: center;
+      padding: 15px;
+    }
 
-      h1 {
-        text-align: center;
-        color: #333;
-        margin-bottom: 20px;
-      }
+    .container {
+      width: 90%;
+      max-width: 800px;
+      margin: 20px auto;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
 
-      input[type="text"] {
-        width: 100%;
-        padding: 10px;
-        border-radius: 6px;
-        border: 1px solid #ccc;
-        outline: none;
-        font-size: 14px;
-        margin-bottom: 12px;
-        box-sizing: border-box;
-      }
+    h2 {
+      margin-top: 0;
+      color: #0078d7;
+    }
 
-      select {
-        width: 100%;
-        padding: 8px;
-        border-radius: 6px;
-        border: 1px solid #ccc;
-        font-size: 14px;
-        margin-bottom: 12px;
-      }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
 
-      button {
-        background: #007bff;
-        color: white;
-        border: none;
-        padding: 10px 15px;
-        border-radius: 6px;
-        font-size: 14px;
-        cursor: pointer;
-        width: 100%;
-        transition: background 0.3s;
-      }
+    input, select, button {
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
 
-      button:hover {
-        background: #0056b3;
-      }
+    button {
+      background-color: #0078d7;
+      color: white;
+      cursor: pointer;
+      border: none;
+    }
 
-      ul {
-        list-style-type: none;
-        padding: 0;
-        margin-top: 15px;
-      }
+    button:hover {
+      background-color: #005ea6;
+    }
 
-      ul li {
-        background: #f1f1f1;
-        margin: 6px 0;
-        padding: 10px;
-        border-radius: 6px;
-        font-size: 14px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
+    .notice {
+      background: #f9f9f9;
+      border-left: 5px solid #0078d7;
+      padding: 10px 15px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+    }
 
-      ul li span {
-        font-weight: bold;
-        color: #007bff;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="container">
-      <h1>College Notice Board</h1>
-      <input id="noticeInput" type="text" placeholder="Write your notice" />
-      <select id="categorySelect">
-        <option value="1">Category 1</option>
-        <option value="2">Category 2</option>
-        <option value="3">Category 3</option>
-        <option value="4">Category 4</option>
+    .notice h3 {
+      margin: 0 0 5px;
+      font-size: 18px;
+    }
+
+    .notice small {
+      color: gray;
+    }
+
+    .notice button {
+      background-color: red;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 3px;
+      cursor: pointer;
+      float: right;
+    }
+
+    .notice button:hover {
+      background-color: darkred;
+    }
+
+    .search-bar {
+      margin-bottom: 20px;
+      display: flex;
+      gap: 10px;
+    }
+
+    .search-bar input {
+      flex: 1;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>College Notice Board</h1>
+  </header>
+
+  <div class="container">
+    <h2>Add a Notice</h2>
+    <form id="noticeForm">
+      <input type="text" id="title" placeholder="Notice Title" required>
+      <select id="category" required>
+        <option value="">Select Category</option>
+        <option value="Events">Events</option>
+        <option value="Academics">Academics</option>
+        <option value="Holidays">Holidays</option>
       </select>
-      <button onclick="addNotice()">Add Notice</button>
-      <ul id="noticeList"></ul>
+      <button type="submit">Add Notice</button>
+    </form>
+
+    <div class="search-bar">
+      <input type="text" id="search" placeholder="Search notices...">
+      <select id="filterCategory">
+        <option value="All">All</option>
+        <option value="Events">Events</option>
+        <option value="Academics">Academics</option>
+        <option value="Holidays">Holidays</option>
+      </select>
     </div>
-  </body>
+
+    <h2>Notices</h2>
+    <div id="noticeList"></div>
+  </div>
+
+  <script>
+    const noticeForm = document.getElementById("noticeForm");
+    const noticeList = document.getElementById("noticeList");
+    const searchInput = document.getElementById("search");
+    const filterCategory = document.getElementById("filterCategory");
+
+    let notices = [];
+
+    noticeForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const title = document.getElementById("title").value;
+      const category = document.getElementById("category").value;
+
+      const newNotice = {
+        id: Date.now(),
+        title,
+        category,
+        date: new Date().toLocaleString()
+      };
+
+      notices.push(newNotice);
+      displayNotices();
+      noticeForm.reset();
+    });
+
+    function displayNotices() {
+      const searchText = searchInput.value.toLowerCase();
+      const selectedCategory = filterCategory.value;
+
+      noticeList.innerHTML = "";
+
+      const filteredNotices = notices.filter(notice => {
+        const matchesSearch = notice.title.toLowerCase().includes(searchText);
+        const matchesCategory = selectedCategory === "All" || notice.category === selectedCategory;
+        return matchesSearch && matchesCategory;
+      });
+
+      filteredNotices.forEach(notice => {
+        const div = document.createElement("div");
+        div.classList.add("notice");
+        div.innerHTML = `
+          <h3>${notice.title}</h3>
+          <small>${notice.category} | ${notice.date}</small>
+          <button onclick="deleteNotice(${notice.id})">Delete</button>
+        `;
+        noticeList.appendChild(div);
+      });
+    }
+
+    function deleteNotice(id) {
+      notices = notices.filter(notice => notice.id !== id);
+      displayNotices();
+    }
+
+    searchInput.addEventListener("input", displayNotices);
+    filterCategory.addEventListener("change", displayNotices);
+  </script>
+</body>
 </html>
