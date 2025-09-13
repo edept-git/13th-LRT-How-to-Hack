@@ -1,0 +1,30 @@
+<html>
+  <head>
+  <title>Notice board</title>
+  </head>
+  <body>
+    <h1>notice board</h1>
+    <input id="noticeInput" type="text" placeholder="Add notice here "/>
+    <button onclick="addNotice()">Add notice</button>
+    <ul id="noticeList"></ul>
+  </body>
+  <script>
+    function addNotice(){
+        const input = document.getElementById("noticeInput");
+        const list= document.getElementById("noticeList");
+
+        const li = document.createElement("li");
+        li.textContent=input.value;
+        
+        const dltBtn=document.createElement("button");
+        dltBtn.textContent="❌";
+        dltBtn.onclick=()=> li.remove();
+        
+        li.appendChild(dltBtn);
+        list.appendChild(li);
+
+        input.value="";
+
+    }
+  </script>
+</html>
