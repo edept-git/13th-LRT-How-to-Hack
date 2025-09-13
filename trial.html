@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        input, select, button {
+            padding: 10px;
+            margin: 5px 0;
+            font-size: 16px;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            background-color: #f4f4f4;
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        li button {
+            background-color: red;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+        </style>
+        
+</head>
+<body>
+    <h1>notify</h1>
+    <input id="noticeInput" type="text" placeholder="Write your notice here..." />
+    <button onclick="addNotice()">Add Notice</button>
+     <select id="categorySelect">
+
+        <option value="General">General</option>
+        <option value="Events">Events</option>
+        <option value="Academics">Academics</option>
+        <option value="Sports">Sports</option>
+    </select>
+    <input id="searchInput" type="text" placeholder="Search notices..." onkeyup="searchNotices()" />
+    <ul id="noticeList"></ul>
+   
+</body>
+
+<script>
+    function addNotice() {
+      const input = document.getElementById("noticeInput");
+      const category = document.getElementById("categorySelect").value;
+      const list = document.getElementById("noticeList");
+      const timestamp=new Date().toLocaleTimeString();
+      
+      
+      const categorycolor={
+        "General":"blue",
+        "Events":"green",
+        "Academics":"orange",
+        "Sports":"red"
+      };
+      
+
+      if (input.value.trim() === "") return;
+
+      const li = document.createElement("li");
+      li.textContent = `[${category}] ${input.value} Posted AT ${timestamp} `;
+      li.style.backgroundColor = categorycolor[category];
+      li.style.color = "white";
+
+
+      const delBtn = document.createElement("button");
+      delBtn.textContent = "❌";
+      delBtn.onclick = () => li.remove();
+      li.appendChild(delBtn);
+      list.appendChild(li);
+
+      input.value = "";
+    }   
+    function searchNotices() {
+      const searchValue = document.getElementById("searchInput").value.toLowerCase();
+      const notices = document.querySelectorAll("#noticeList li");
+
+      notices.forEach(notice => {
+        if (notice.textContent.toLowerCase().includes(searchValue)) {
+          notice.style.display = "";
+        } else {
+          notice.style.display = "none";
+        }
+      });
+    }
+</script>
+</html>
